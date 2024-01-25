@@ -1,12 +1,39 @@
 {% extends "base.html" %}
+{% load widget_tweaks %}
 
 {% block title %}Sign Up{% endblock title %}
 
 
 {% block content %}
-    <h2>Sign Up</h2>
-    <form method="post">{% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Sign Up</button>
-    </form>
+    <div class="flex flex-col items-center m-4">
+        <h1 class="font-sans text-2xl">Inscrivez-vous</h1>
+        <form method="post" class="flex flex-col items-end space-y-4">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            <div class="flex flex-col">
+                {{ form.username.errors }}
+                <label for="{{ form.username.id_for_label }}"></label>
+                {% render_field form.username class="appearance-none border rounded w-96 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder=form.username.label %}
+            </div>
+            <div class="flex flex-col">
+                {{ form.password1.errors }}
+                <label for="{{ form.password1.id_for_label }}"></label>
+                {% render_field form.password1 class="appearance-none border rounded w-96 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder=form.password1.label %}
+            </div>
+            <div class="flex flex-col">
+                {{ form.password2.errors }}
+                <label for="{{ form.password2.id_for_label }}"></label>
+                {% render_field form.password2 class="appearance-none border rounded w-96 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder=form.password2.label %}
+            </div>
+            <div class="flex flex-col">
+                {{ form.age.errors }}
+                <label for="{{ form.age.id_for_label }}"></label>
+                {% render_field form.age class="appearance-none border rounded w-96 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder=form.age.label %}
+            </div>
+            <div class="flex space-x-4">
+                <a href="{% url 'home' %}" class="bg-gray-800 hover:bg-gray-700 text-cyan-300 font-bold py-2 px-4 w-auto rounded focus:outline-none focus:shadow-outline">Retourner</a>
+                <button type="submit" class="bg-gray-800 hover:bg-gray-700 text-cyan-300 font-bold py-2 px-4 w-auto rounded focus:outline-none focus:shadow-outline">S'inscrire</button>
+            </div>        
+        </form>
+    </div>
 {% endblock content %}
