@@ -38,11 +38,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'accounts.apps.AccountsConfig',
+    'review.apps.ReviewConfig',
     'tailwind',
     'widget_tweaks',
     'theme',
     'django_browser_reload',
-    'review',
 ]
 TAILWIND_APP_NAME = 'theme'
 

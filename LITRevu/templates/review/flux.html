@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}Flux{% endblock title %}
+
+    
+
+{% block content %}
+    <div class="flex space-x-4 justify-center">
+        <a href="{% url 'ticket' %}" class="bg-gray-800 hover:bg-gray-700 text-cyan-300 font-bold py-2 px-4 m-6 w-auto rounded focus:outline-none focus:shadow-outline">Demander une critique</a>
+        <a href="{% url 'ticket_review' %}" class="bg-gray-800 hover:bg-gray-700 text-cyan-300 font-bold py-2 px-4 m-6 w-auto rounded focus:outline-none focus:shadow-outline">Créer une critique</a>
+    </div>
+    <div class="bg-slate-400 rounded h-96 mx-auto w-4/5">
+
+    </div>
+
+{% endblock content %}
