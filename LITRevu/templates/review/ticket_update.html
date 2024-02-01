@@ -1,10 +1,33 @@
 {% extends "base.html" %}
 {% load widget_tweaks %}
-{% block title %}asking review{% endblock title %}
+
+{% block title %}edit ticket{% endblock title %}
 
     
 
 {% block content %}
+<h1>Edit</h1>
+<form action="" method="post" class="flex flex-col items-end space-y-4">{% csrf_token %}
+    {% csrf_token %}
+            {% if form.non_field_errors %}
+                {{ form.non_field_errors }}
+            {% endif %}
+            <div class="flex flex-col">
+                {{ form.title.errors }}
+                <label for="{{ form.title.id_for_label }}"></label>
+                {% render_field form.title class="appearance-none border rounded w-96 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder=form.username.label %}
+            </div>
+            <div class="flex flex-col">
+                {{ form.description.errors }}
+                <label for="{{ form.description.id_for_label }}"></label>
+                {% render_field form.description class="appearance-none border rounded w-96 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder=form.password1.label %}
+            </div>
+            <div class="flex flex-col">
+                {{ form.image.errors }}
+                <label for="{{ form.image.id_for_label }}"></label>
+                {% render_field form.image class="appearance-none border rounded w-96 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder=form.password2.label %}
+            </div>
 
-
+    <button class="bg-gray-800 hover:bg-gray-700 text-cyan-300 font-bold py-2 px-4 w-auto rounded focus:outline-none focus:shadow-outline" type="submit">Modifier</button>
+</form>
 {% endblock content %}

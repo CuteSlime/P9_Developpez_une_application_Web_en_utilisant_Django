@@ -1,6 +1,8 @@
 from django.views.generic import TemplateView, ListView, CreateView, DetailView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from .models import Ticket, Review
+from django.utils import timezone
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Flux
 
@@ -10,9 +12,19 @@ class TicketListView(ListView):
     template_name = "review/flux.html"
 
 
-class TicketCreateView(CreateView):
+class TicketCreateView(LoginRequiredMixin, CreateView):
     model = Ticket
-    template_name = "review/ticket_create.html"
+    template_name = "review/ticket_new.html"
+    success_url = reverse_lazy("flux")
+    fields = (
+        "title",
+        "description",
+        "image",
+    )
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
 
 # Ticket
 
@@ -24,12 +36,13 @@ class TicketDetailView(DetailView):
 
 class TicketUpdateView(UpdateView):
     model = Ticket
+    success_url = reverse_lazy("flux")
+    template_name = "review/ticket_update.html"
     fields = (
         "title",
         "description",
         "image",
     )
-    template_name = "review/ticket_update.html"
 
 
 class TicketDeleteView(DeleteView):
@@ -37,16 +50,16 @@ class TicketDeleteView(DeleteView):
     template_name = "review/ticket_delete.html"
     success_url = reverse_lazy("flux")
 
+
 # create and review a ticket at the same time
-
-
 class TicketReviewCreateView(CreateView):
-    template_name = "review/ticket_review_create.html"
+    template_name = "review/ticket_review_new.html"
+    success_url = reverse_lazy("flux")
 
 
 # review
 class ReviewCreateView(CreateView):
-    template_name = "review/review_create.html"
+    template_name = "review/review_new.html"
 
 
 class ReviewListView(ListView):
@@ -56,12 +69,12 @@ class ReviewListView(ListView):
 
 class ReviewUpdateView(UpdateView):
     model = Review
+    template_name = "review/review_update.html"
     fields = (
         "title",
         "description",
         "image",
     )
-    template_name = "review/review_update.html"
 
 
 class ReviewDeleteView(DeleteView):

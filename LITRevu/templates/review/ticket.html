@@ -1,10 +1,30 @@
 {% extends "base.html" %}
 {% load widget_tweaks %}
-{% block title %}asking review{% endblock title %}
+{% block title %}ticket details{% endblock title %}
 
     
 
 {% block content %}
+<div class="bg-slate-400 rounded mx-auto w-4/5 p-6 mt-6">
+    <div class="flex justify-between">
+        <span>{{ ticket.user }} à demandé une critique</span><span>{{ ticket.time_created }}</span>
+    </div>
+    <br>
+    <h2>{{ ticket.title }}</h2>
+    <br>
+    <p>{{ ticket.description }}</p>
+    <img src="{{ticket.image.url}}" alt="Couverture du livre">
+    <br>
+
+    {% if request.user == ticket.user %}
+        <div class="text-center">
+            <p><a href="{% url 'ticket_update' ticket.pk %}" class="bg-gray-800 hover:bg-gray-700 text-cyan-300 font-bold py-2 px-4 w-auto rounded focus:outline-none focus:shadow-outline">Modifier</a> |
+            <a href="{% url 'ticket_delete' ticket.pk %}" class="bg-red-900 hover:bg-red-800 text-cyan-300 font-bold py-2 px-4 w-auto rounded focus:outline-none focus:shadow-outline">Suprimer</a></p>
+        </div>
+    {% endif %}
+        
+</div>
+
 
 
 {% endblock content %}
