@@ -5,6 +5,42 @@
     
 
 {% block content %}
+<div class="bg-slate-200 rounded mx-auto w-4/5 p-6 mt-6">
+    <div class="flex justify-between">
+        <span>{{ ticket.user }} à demandé une critique</span><span>{{ ticket.time_created }}</span>
+    </div>
+    <br>
+    <h2 class="text-2xl">{{ ticket.title }}</h2>
+    <br>
+    <p>{{ ticket.description }}</p>
+    <img src="{{ticket.image.url}}" alt="Couverture du livre" class=" max-h-96">
+    <br>
+        
+</div>
+<br>
+<div class="bg-slate-200 rounded mx-auto w-4/5 p-6 mt-6">
+    <form action="" method="post" class="flex flex-col items-start space-y-4">{% csrf_token %}
+        {% csrf_token %}
+                {% if form.non_field_errors %}
+                    {{ form.non_field_errors }}
+                {% endif %}
+                <div class="flex flex-col">
+                    {{ form.headline.errors }}
+                    <label for="{{ form.headline.id_for_label }}"></label>
+                    {% render_field form.headline class="appearance-none border rounded w-96 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder=form.username.label %}
+                </div>
+                <div class="flex flex-col">
+                    {{ form.body.errors }}
+                    <label for="{{ form.body.id_for_label }}"></label>
+                    {% render_field form.body class="appearance-none border rounded w-96 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder=form.password1.label %}
+                </div>
+                <div class="flex flex-col">
+                    {{ form.rating.errors }}
+                    <label for="{{ form.rating.id_for_label }}"></label>
+                    {% render_field form.rating class="appearance-none border rounded w-96 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder=form.password2.label %}
+                </div>
 
-
+        <button class="bg-gray-800 hover:bg-gray-700 text-cyan-300 font-bold py-2 px-4 w-auto rounded focus:outline-none focus:shadow-outline" type="submit">Modifier</button>
+    </form>
+</div>
 {% endblock content %}

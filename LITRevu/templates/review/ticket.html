@@ -1,16 +1,19 @@
 {% extends "base.html" %}
 {% load widget_tweaks %}
+{% load star_filter %}
+
+
 {% block title %}ticket details{% endblock title %}
 
     
 
 {% block content %}
-<div class="bg-slate-400 rounded mx-auto w-4/5 p-6 mt-6">
+<div class="bg-slate-200 rounded mx-auto w-4/5 p-6 mt-6">
     <div class="flex justify-between">
         <span>{{ ticket.user }} à demandé une critique</span><span>{{ ticket.time_created }}</span>
     </div>
     <br>
-    <h2>{{ ticket.title }}</h2>
+    <h2 class="text-2xl">{{ ticket.title }}</h2>
     <br>
     <p>{{ ticket.description }}</p>
     <img src="{{ticket.image.url}}" alt="Couverture du livre">
@@ -24,7 +27,26 @@
     {% endif %}
         
 </div>
-
+{% for review in ticket.review_set.all %}
+    <div class="bg-slate-200 rounded mx-auto w-4/5 p-6 mt-6">
+        
+        <div class="flex justify-between">
+            <span>{{ review.user }} à publié une critique</span><span>{{ review.time_created }}</span>
+        </div>
+        <br>
+        <h2 class="text-2xl">{{ review.headline }} - {{ review.rating|stars }}</h2>
+        <br>
+        <p>{{ review.body }}</p>
+        <br>
+        {% if request.user == review.user %}
+            <div class="text-center">
+                <p><a href="{% url 'review_update' review.pk %}" class="bg-gray-800 hover:bg-gray-700 text-cyan-300 font-bold py-2 px-4 w-auto rounded focus:outline-none focus:shadow-outline">Modifier</a> |
+                <a href="{% url 'review_delete' review.pk %}" class="bg-red-900 hover:bg-red-800 text-cyan-300 font-bold py-2 px-4 w-auto rounded focus:outline-none focus:shadow-outline">Suprimer</a></p>
+            </div>
+        {% endif %}
+    </div>
+    <br>
+{% endfor %}
 
 
 {% endblock content %}

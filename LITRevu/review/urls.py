@@ -34,7 +34,8 @@ urlpatterns += (
 )
 # Review
 urlpatterns += (
-    path("review/new/", ReviewCreateView.as_view(), name="review_create"),
+    path("review/new/<int:ticket_id>",
+         ReviewCreateView.as_view(), name="review_create"),
     path("review/update/<int:pk>/",
          ReviewUpdateView.as_view(), name="review_update"),
     path("review/delete/<int:pk>/",
