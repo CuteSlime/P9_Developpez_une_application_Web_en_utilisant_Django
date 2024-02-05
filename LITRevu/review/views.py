@@ -66,11 +66,36 @@ class TicketDeleteView(UserPassesTestMixin, DeleteView):
 
 
 class TicketReviewCreateView(LoginRequiredMixin, CreateView):
+    model = Ticket
     template_name = "review/ticket_review_new.html"
-    success_url = reverse_lazy("flux")
+    fields = ("title", "description", "image",)
 
+    def get_context_data(self, **kwargs):
+        data = super().get_context_data(**kwargs)
+        if self.request.POST:
+            data['review'] = RatingForm(self.request.POST)
+        else:
+            data['review'] = RatingForm()
+        return data
 
+    def form_valid(self, form):
+        context = self.get_context_data()
+        review = context['review']
+        form.instance.user = self.request.user
+        self.object = form.save()
+        if review.is_valid():
+            review.instance.ticket = self.object
+            review.instance.user = self.request.user
+            review.save()
+        else:
+            print(review.errors)  # Print form errors
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('flux')
 # review
+
+
 class ReviewCreateView(LoginRequiredMixin, CreateView):
     model = Review
     template_name = "review/review_new.html"
