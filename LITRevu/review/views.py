@@ -2,12 +2,12 @@ from django.shortcuts import get_object_or_404
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from .models import Ticket, Review
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 # Flux
 
 
-class TicketListView(ListView):
+class TicketListView(LoginRequiredMixin, ListView):
     model = Ticket
     template_name = "review/flux.html"
 
@@ -29,12 +29,13 @@ class TicketCreateView(LoginRequiredMixin, CreateView):
 # Ticket
 
 
-class TicketDetailView(DetailView):
+class TicketDetailView(LoginRequiredMixin, DetailView):
     model = Ticket
     template_name = "review/ticket.html"
 
 
-class TicketUpdateView(UpdateView):
+class TicketUpdateView(UserPassesTestMixin, UpdateView):
+    raise_exception = True
     model = Ticket
     success_url = reverse_lazy("flux")
     template_name = "review/ticket_update.html"
@@ -44,21 +45,32 @@ class TicketUpdateView(UpdateView):
         "image",
     )
 
+    def test_func(self):
+        ticket = self.get_object()
+        return self.request.user == ticket.user
+    raise_exception = True
 
-class TicketDeleteView(DeleteView):
+
+class TicketDeleteView(UserPassesTestMixin, DeleteView):
+    raise_exception = True
     model = Ticket
     template_name = "review/ticket_delete.html"
     success_url = reverse_lazy("flux")
 
+    def test_func(self):
+        ticket = self.get_object()
+        return self.request.user == ticket.user
 
 # create and review a ticket at the same time
-class TicketReviewCreateView(CreateView):
+
+
+class TicketReviewCreateView(LoginRequiredMixin, CreateView):
     template_name = "review/ticket_review_new.html"
     success_url = reverse_lazy("flux")
 
 
 # review
-class ReviewCreateView(CreateView):
+class ReviewCreateView(LoginRequiredMixin, CreateView):
     model = Review
     template_name = "review/review_new.html"
 
@@ -87,12 +99,13 @@ class ReviewCreateView(CreateView):
         return reverse_lazy('ticket', kwargs={'pk': self.object.ticket.pk})
 
 
-class ReviewListView(ListView):
+class ReviewListView(LoginRequiredMixin, ListView):
     model = Review
     template_name = "review/flux.html"
 
 
-class ReviewUpdateView(UpdateView):
+class ReviewUpdateView(UserPassesTestMixin, UpdateView):
+    raise_exception = True
     model = Review
     template_name = "review/review_update.html"
     fields = (
@@ -101,13 +114,22 @@ class ReviewUpdateView(UpdateView):
         "rating",
     )
 
+    def test_func(self):
+        review = self.get_object()
+        return self.request.user == review.user
+
     def get_success_url(self):
         return reverse_lazy('ticket', kwargs={'pk': self.object.ticket.pk})
 
 
-class ReviewDeleteView(DeleteView):
+class ReviewDeleteView(UserPassesTestMixin, DeleteView):
+    raise_exception = True
     model = Review
     template_name = "review/review_delete.html"
+
+    def test_func(self):
+        review = self.get_object()
+        return self.request.user == review.user
 
     def get_success_url(self):
         return reverse_lazy('ticket', kwargs={'pk': self.object.ticket.pk})
