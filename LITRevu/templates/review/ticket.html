@@ -16,7 +16,11 @@
     <h2 class="text-2xl">{{ ticket.title }}</h2>
     <br>
     <p>{{ ticket.description }}</p>
-    <img src="{{ticket.image.url}}" alt="Couverture du livre">
+    {% if ticket.image %}
+        <img src="{{ticket.image.url}}" alt="couverture du livre" class=" max-h-96">
+    {% else %}
+        <p>pas d'image</p>
+    {% endif %}
     <br>
 
     {% if request.user == ticket.user %}

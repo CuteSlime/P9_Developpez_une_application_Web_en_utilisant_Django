@@ -25,7 +25,11 @@
                     </div>
                     <br>
                     <div class="">
-                        <img src="{{ticket.image.url}}" alt="couverture du livre">
+                        {% if ticket.image %}
+                            <img src="{{ticket.image.url}}" alt="couverture du livre" class=" max-h-96">
+                        {% else %}
+                            <p>pas d'image</p>
+                        {% endif %}
                     </div>
                     <br>
                     {% if request.user == ticket.user %}

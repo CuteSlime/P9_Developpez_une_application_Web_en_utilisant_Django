@@ -13,7 +13,11 @@
     <h2 class="text-2xl">{{ review.ticket.title }}</h2>
     <br>
     <p>{{ review.ticket.description }}</p>
-    <img src="{{review.ticket.image.url}}" alt="Couverture du livre" class=" max-h-96">
+    {% if ticket.image %}
+        <img src="{{ticket.image.url}}" alt="couverture du livre" class=" max-h-96">
+    {% else %}
+        <p>pas d'image</p>
+    {% endif %}
     <br>
         
 </div>
