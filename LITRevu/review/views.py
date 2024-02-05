@@ -2,6 +2,7 @@ from django.shortcuts import get_object_or_404
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from .models import Ticket, Review
+from .forms import RatingForm
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 # Flux
@@ -73,12 +74,7 @@ class TicketReviewCreateView(LoginRequiredMixin, CreateView):
 class ReviewCreateView(LoginRequiredMixin, CreateView):
     model = Review
     template_name = "review/review_new.html"
-
-    fields = (
-        "headline",
-        "body",
-        "rating",
-    )
+    form_class = RatingForm
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -92,7 +88,6 @@ class ReviewCreateView(LoginRequiredMixin, CreateView):
         form.instance.ticket = get_object_or_404(
             Ticket, pk=self.kwargs['ticket_id'])
         form.instance.user = self.request.user
-        form.instance.rating = form.cleaned_data['rating']
         return super().form_valid(form)
 
     def get_success_url(self):
@@ -107,12 +102,8 @@ class ReviewListView(LoginRequiredMixin, ListView):
 class ReviewUpdateView(UserPassesTestMixin, UpdateView):
     raise_exception = True
     model = Review
+    form_class = RatingForm
     template_name = "review/review_update.html"
-    fields = (
-        "headline",
-        "body",
-        "rating",
-    )
 
     def test_func(self):
         review = self.get_object()
