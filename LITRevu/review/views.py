@@ -6,12 +6,26 @@ from accounts.models import CustomUser
 from .forms import RatingForm, FollowUserForm
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
+
 # Flux
-
-
 class TicketListView(LoginRequiredMixin, ListView):
     model = Ticket
     template_name = "review/flux.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        tickets = [{'content': ticket, 'timestamp': ticket.time_created}
+                   for ticket in Ticket.objects.all()]
+        reviews = [{'content': review, 'timestamp': review.time_created}
+                   for review in Review.objects.all()]
+
+        flux = sorted(tickets + reviews,
+                      key=lambda item: item['timestamp'], reverse=True)
+
+        context['flux'] = flux
+        context['review'] = Review.objects.all()
+        return context
 
 
 class TicketCreateView(LoginRequiredMixin, CreateView):
@@ -71,12 +85,12 @@ class TicketReviewCreateView(LoginRequiredMixin, CreateView):
     fields = ("title", "description", "image",)
 
     def get_context_data(self, **kwargs):
-        data = super().get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         if self.request.POST:
-            data['review'] = RatingForm(self.request.POST)
+            context['review'] = RatingForm(self.request.POST)
         else:
-            data['review'] = RatingForm()
-        return data
+            context['review'] = RatingForm()
+        return context
 
     def form_valid(self, form):
         context = self.get_context_data()

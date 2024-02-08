@@ -1,5 +1,6 @@
 {% extends "base.html" %}
-
+{% load star_filter %}
+{% load class_filter %}
 {% block title %}Flux{% endblock title %}
 
     
@@ -10,43 +11,64 @@
         <a href="{% url 'ticket_review_create' %}" class="bg-gray-800 hover:bg-gray-700 text-cyan-300 font-bold py-2 px-4 mx-6 w-auto rounded focus:outline-none focus:shadow-outline">Créer une critique</a>
     </div>
     
-        {% for ticket in ticket_list %}
-        <div>
-            <a href="{% url 'ticket' ticket.pk %}" class="">
-                <div class="bg-slate-200 rounded mx-auto w-4/5 p-6 my-6">
-                    <div class="flex justify-between">
-                    <span>{{ ticket.user }} à demandé une critique</span><span>{{ ticket.time_created }}</span>
-                    </div>
-                    <br>
-                        <h2>{{ ticket.title }}</h2>
-                    <br>
-                    <div class="card-body">
-                        {{ ticket.description }}
-                    </div>
-                    <br>
-                    <div class="">
-                        {% if ticket.image %}
-                            <img src="{{ticket.image.url}}" alt="couverture du livre" class=" max-h-96">
-                        {% else %}
-                            <p>pas d'image</p>
-                        {% endif %}
-                    </div>
-                    <br>
-                    {% if request.user == ticket.user %}
-                        <div class="text-center">
-                            <p><a href="{% url 'ticket_update' ticket.pk %}" class="bg-gray-800 hover:bg-gray-700 text-cyan-300 font-bold py-2 px-4 w-auto rounded focus:outline-none focus:shadow-outline">Modifier</a> |
-                            <a href="{% url 'ticket_delete' ticket.pk %}" class="bg-red-900 hover:bg-red-800 text-cyan-300 font-bold py-2 px-4 w-auto rounded focus:outline-none focus:shadow-outline">Suprimer</a></p>
+        {% for card in flux %}
+            {% if card.content|class_name == "Ticket" %}
+                <div>
+                    <a href="{% url 'ticket' card.content.pk %}" class="">
+                        <div class="bg-slate-200 rounded mx-auto w-4/5 p-6 my-6">
+                            <div class="flex justify-between">
+                            <span>{{ card.content.user }} à demandé une critique</span><span>{{ card.content.time_created }}</span>
+                            </div>
+                            <br>
+                                <h2>{{ card.content.title }}</h2>
+                            <br>
+                            <div class="card-body">
+                                {{ card.content.description }}
+                            </div>
+                            <br>
+                            <div class="">
+                                {% if card.content.image %}
+                                    <img src="{{card.content.image.url}}" alt="couverture du livre" class=" max-h-96">
+                                {% else %}
+                                    <p>pas d'image</p>
+                                {% endif %}
+                            </div>
+                            <br>
+                            {% if request.user == card.content.user %}
+                                <div class="text-center">
+                                    <p><a href="{% url 'ticket_update' card.content.pk %}" class="bg-gray-800 hover:bg-gray-700 text-cyan-300 font-bold py-2 px-4 w-auto rounded focus:outline-none focus:shadow-outline">Modifier</a> |
+                                    <a href="{% url 'ticket_delete' card.content.pk %}" class="bg-red-900 hover:bg-red-800 text-cyan-300 font-bold py-2 px-4 w-auto rounded focus:outline-none focus:shadow-outline">Suprimer</a></p>
+                                </div>
+                            {% else %}
+                                <div class="text-center">
+                                    <p><a href="{% url 'review_create' card.content.id %}" class="bg-gray-800 hover:bg-gray-700 text-cyan-300 font-bold py-2 px-4 w-auto rounded focus:outline-none focus:shadow-outline">Créer une critique</a>
+                                </div>
+                            {% endif %}
                         </div>
-                    {% else %}
-                        <div class="text-center">
-                            <p><a href="{% url 'review_create' ticket.id %}" class="bg-gray-800 hover:bg-gray-700 text-cyan-300 font-bold py-2 px-4 w-auto rounded focus:outline-none focus:shadow-outline">Créer une critique</a>
-                        </div>
-                    {% endif %}
+                    <br>
                 </div>
-            <br>
-            </a>
+            {% elif card.content|class_name == "Review" %}
+                <div class="bg-slate-200 rounded mx-auto w-4/5 p-6 mt-6">
         
-        </div>
+                <div class="flex justify-between">
+                    <span>{{ card.content.user }} à publié une critique</span><span>{{ card.content.time_created }}</span>
+                </div>
+                <br>
+                <h2 class="text-2xl">{{ card.content.headline }} - {{ card.content.rating|stars }}</h2>
+                <br>
+                <p>{{ card.content.body }}</p>
+                <br>
+                {% if request.user == card.content.user %}
+                    <div class="text-center">
+                        <p><a href="{% url 'review_update' card.content.pk %}" class="bg-gray-800 hover:bg-gray-700 text-cyan-300 font-bold py-2 px-4 w-auto rounded focus:outline-none focus:shadow-outline">Modifier</a> |
+                        <a href="{% url 'review_delete' card.content.pk %}" class="bg-red-900 hover:bg-red-800 text-cyan-300 font-bold py-2 px-4 w-auto rounded focus:outline-none focus:shadow-outline">Suprimer</a></p>
+                    </div>
+                {% endif %}
+            </div>
+            <br>
+
+            {% endif %}
+            
         {% endfor %}
 
 
