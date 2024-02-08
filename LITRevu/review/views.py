@@ -1,8 +1,9 @@
 from django.shortcuts import get_object_or_404
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 from django.urls import reverse_lazy
-from .models import Ticket, Review
-from .forms import RatingForm
+from .models import Ticket, Review, UserFollows
+from accounts.models import CustomUser
+from .forms import RatingForm, FollowUserForm
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 # Flux
@@ -62,9 +63,8 @@ class TicketDeleteView(UserPassesTestMixin, DeleteView):
         ticket = self.get_object()
         return self.request.user == ticket.user
 
+
 # create and review a ticket at the same time
-
-
 class TicketReviewCreateView(LoginRequiredMixin, CreateView):
     model = Ticket
     template_name = "review/ticket_review_new.html"
@@ -88,7 +88,7 @@ class TicketReviewCreateView(LoginRequiredMixin, CreateView):
             review.instance.user = self.request.user
             review.save()
         else:
-            print(review.errors)  # Print form errors
+            print(review.errors)
         return super().form_valid(form)
 
     def get_success_url(self):
@@ -149,3 +149,34 @@ class ReviewDeleteView(UserPassesTestMixin, DeleteView):
 
     def get_success_url(self):
         return reverse_lazy('ticket', kwargs={'pk': self.object.ticket.pk})
+
+
+# follower and followed
+class UserFollowsListView(LoginRequiredMixin, ListView):
+    model = UserFollows
+    template_name = 'review/follow.html'
+    context_object_name = 'user_follows'
+
+    def get_queryset(self):
+        return UserFollows.objects.filter(user=self.request.user)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = getattr(
+            self, 'form', FollowUserForm(user=self.request.user))
+
+        return context
+
+    def post(self, request, *args, **kwargs):
+        action = request.POST.get('action')
+        username = request.POST.get('username')
+        self.form = FollowUserForm(request.POST, user=request.user)
+        if action == 'follow' and self.form.is_valid():
+            user_to_follow = CustomUser.objects.get(username=username)
+            UserFollows.objects.get_or_create(
+                user=request.user, followed_user=user_to_follow)
+        elif action == 'unfollow':
+            user_to_unfollow = CustomUser.objects.get(username=username)
+            UserFollows.objects.filter(
+                user=request.user, followed_user=user_to_unfollow).delete()
+        return self.get(request, *args, **kwargs)

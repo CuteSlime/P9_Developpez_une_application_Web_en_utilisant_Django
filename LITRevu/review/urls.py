@@ -9,6 +9,7 @@ from .views import (
     ReviewCreateView,
     ReviewUpdateView,
     ReviewDeleteView,
+    UserFollowsListView,
 )
 
 urlpatterns = [
@@ -40,4 +41,11 @@ urlpatterns += (
          ReviewUpdateView.as_view(), name="review_update"),
     path("review/delete/<int:pk>/",
          ReviewDeleteView.as_view(), name="review_delete"),
+)
+
+# Follow
+urlpatterns += (
+    path("follow/",
+         UserFollowsListView.as_view(), name="follow"),
+
 )

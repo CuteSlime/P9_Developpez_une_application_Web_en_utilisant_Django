@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Flux{% endblock title %}
+
+    
+
+{% block content %}
+
+    <div class="bg-slate-200 rounded mx-auto w-4/5 p-6 my-6">
+        <h2>Suivre d'autres utilisateurs</h2>
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.username.label_tag }} {{ form.username }}
+            {% for error in form.username.errors %}
+                <div class="alert alert-danger">
+                    {{ error }}
+                </div>
+            {% endfor %}
+            <input type="hidden" name="action" value="follow">
+            <button type="submit" class="bg-gray-800 hover:bg-gray-700 text-cyan-300 font-bold py-2 px-4 w-auto rounded focus:outline-none focus:shadow-outline">S'abonné</button>
+        </form>
+        <h2>Abonnements</h2>
+        <div class="flex"></div>
+        {% for user_follow in user_follows %}
+        <div class="inline-flex">
+            <p>{{ user_follow.followed_user }}</p>
+            <form method="POST">
+                {% csrf_token %}
+                {{ form.non_field_errors }}
+                <input type="hidden" name="username" value="{{ user_follow.followed_user.username }}">
+                <input type="hidden" name="action" value="unfollow">
+                <button type="submit" class="bg-red-900 hover:bg-red-800 text-cyan-300 font-bold py-2 px-4 w-auto rounded focus:outline-none focus:shadow-outline">Désabonner</button>
+            </form>
+        </div>
+        <br>
+        {% endfor %}
+
+
+        <h2>Abonnés</h2>
+        {% for user_follow in request.user.followed_by.all %}
+            <p>{{ user_follow.user.username }}</p>
+        {% endfor %}
+        
+    </div>
+
+
+
+{% endblock content %}
