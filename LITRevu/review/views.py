@@ -1,5 +1,6 @@
 from django.shortcuts import get_object_or_404
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
+from django.db.models import Q
 from django.urls import reverse_lazy
 from .models import Ticket, Review, UserFollows
 from accounts.models import CustomUser
@@ -15,10 +16,14 @@ class TicketListView(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
+        user_followed = UserFollows.objects.filter(
+            user=self.request.user).values_list('followed_user', flat=True)
+        ticket_author = Ticket.objects.filter(user=self.request.user)
+
         tickets = [{'content': ticket, 'timestamp': ticket.time_created}
-                   for ticket in Ticket.objects.all()]
+                   for ticket in Ticket.objects.filter(Q(user__in=user_followed) | Q(user=self.request.user))]
         reviews = [{'content': review, 'timestamp': review.time_created}
-                   for review in Review.objects.all()]
+                   for review in Review.objects.filter(Q(user__in=user_followed) | Q(user=self.request.user) | Q(ticket__in=ticket_author))]
 
         flux = sorted(tickets + reviews,
                       key=lambda item: item['timestamp'], reverse=True)
