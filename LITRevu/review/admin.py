@@ -1,7 +1,6 @@
 from django.contrib import admin
-from review.models import Ticket, Review, UserFollows
 
-# Register your models here.
+from review.models import Ticket, Review, UserFollows
 
 
 class TicketAdmin(admin.ModelAdmin):  # nous insérons ces deux lignes..

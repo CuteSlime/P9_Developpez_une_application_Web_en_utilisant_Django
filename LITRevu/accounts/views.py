@@ -1,8 +1,9 @@
 from django.urls import reverse_lazy
 from django.shortcuts import render, redirect
-from django.views.generic import CreateView, View
-from .forms import CustomUserCreationForm
 from django.contrib.auth.forms import AuthenticationForm
+from django.views.generic import CreateView, View
+
+from .forms import CustomUserCreationForm
 
 
 class SignUpView(CreateView):

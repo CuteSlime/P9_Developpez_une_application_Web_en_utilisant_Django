@@ -1,11 +1,12 @@
 from django.shortcuts import get_object_or_404
-from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 from django.db.models import Q
 from django.urls import reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
+
 from .models import Ticket, Review, UserFollows
 from accounts.models import CustomUser
 from .forms import RatingForm, FollowUserForm
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 
 # Flux
@@ -21,9 +22,12 @@ class TicketListView(LoginRequiredMixin, ListView):
         ticket_author = Ticket.objects.filter(user=self.request.user)
 
         tickets = [{'content': ticket, 'timestamp': ticket.time_created}
-                   for ticket in Ticket.objects.filter(Q(user__in=user_followed) | Q(user=self.request.user))]
+                   for ticket in Ticket.objects.filter(Q(user__in=user_followed) |
+                                                       Q(user=self.request.user))]
         reviews = [{'content': review, 'timestamp': review.time_created}
-                   for review in Review.objects.filter(Q(user__in=user_followed) | Q(user=self.request.user) | Q(ticket__in=ticket_author))]
+                   for review in Review.objects.filter(Q(user__in=user_followed) |
+                                                       Q(user=self.request.user) |
+                                                       Q(ticket__in=ticket_author))]
 
         flux = sorted(tickets + reviews,
                       key=lambda item: item['timestamp'], reverse=True)

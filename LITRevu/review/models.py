@@ -1,7 +1,7 @@
-# Create your models here.
 from django.core.validators import MinValueValidator, MaxValueValidator
-from accounts.models import CustomUser
 from django.db import models
+
+from accounts.models import CustomUser
 
 
 class Ticket(models.Model):
