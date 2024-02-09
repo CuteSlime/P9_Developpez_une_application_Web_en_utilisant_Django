@@ -17,23 +17,27 @@
                 </div>
             {% endfor %}
             <input type="hidden" name="action" value="follow">
-            <button type="submit" class="bg-gray-800 hover:bg-gray-700 text-cyan-300 font-bold py-2 px-4 w-auto rounded focus:outline-none focus:shadow-outline">S'abonné</button>
+            <button type="submit" class="bg-gray-800 hover:bg-gray-700 text-cyan-300 font-bold py-2 px-4 w-auto rounded focus:outline-none focus:shadow-outline">S'abonner</button>
         </form>
         <h2>Abonnements</h2>
         <div class="flex"></div>
-        {% for user_follow in user_follows %}
-        <div class="inline-flex">
-            <p>{{ user_follow.followed_user }}</p>
-            <form method="POST">
-                {% csrf_token %}
-                {{ form.non_field_errors }}
-                <input type="hidden" name="username" value="{{ user_follow.followed_user.username }}">
-                <input type="hidden" name="action" value="unfollow">
-                <button type="submit" class="bg-red-900 hover:bg-red-800 text-cyan-300 font-bold py-2 px-4 w-auto rounded focus:outline-none focus:shadow-outline">Désabonner</button>
-            </form>
-        </div>
-        <br>
-        {% endfor %}
+        <table class="w-full">
+            <tbody class="border-2 border-neutral-950 ">
+                {% for user_follow in user_follows %}
+                    <tr class="flex justify-between">
+                            <td class="border-r-2"><p>{{ user_follow.followed_user }}</p></td>
+                            <td class="border-l-2"><form method="POST">
+                                {% csrf_token %}
+                                {{ form.non_field_errors }}
+                                <input type="hidden" name="username" value="{{ user_follow.followed_user.username }}">
+                                <input type="hidden" name="action" value="unfollow">
+                                <button type="submit" class="bg-red-900 hover:bg-red-800 text-cyan-300 font-bold py-2 px-4 w-auto rounded focus:outline-none focus:shadow-outline">ce désabonner</button>
+                            </form></td>
+                    </tr>
+                {% endfor %}
+                
+            </tbody>
+        </table>
 
 
         <h2>Abonnés</h2>

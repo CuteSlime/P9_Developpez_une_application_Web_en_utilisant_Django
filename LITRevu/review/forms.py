@@ -39,4 +39,7 @@ class FollowUserForm(forms.Form):
             raise forms.ValidationError("Cette utilisateur n'existe pas.")
         if UserFollows.objects.filter(user=self.user, followed_user=user_to_follow).exists():
             raise forms.ValidationError("Vous suivez déjà cette utilisateur.")
+        if user_to_follow == self.user:
+            raise forms.ValidationError(
+                "Vous ne pouvez pas vous abonner à vous même.")
         return username
