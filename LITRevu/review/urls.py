@@ -2,6 +2,7 @@ from django.urls import path
 
 from .views import (
     TicketListView,
+    PostListView,
     TicketCreateView,
     TicketDetailView,
     TicketUpdateView,
@@ -15,6 +16,7 @@ from .views import (
 
 urlpatterns = [
     path("flux/", TicketListView.as_view(), name="flux"),
+    path("post/", PostListView.as_view(), name="post"),
 ]
 
 # Ticket

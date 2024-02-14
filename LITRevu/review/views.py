@@ -33,7 +33,27 @@ class TicketListView(LoginRequiredMixin, ListView):
                       key=lambda item: item['timestamp'], reverse=True)
 
         context['flux'] = flux
-        context['review'] = Review.objects.all()
+        # context['review'] = Review.objects.all()
+        return context
+
+
+# Post
+class PostListView(LoginRequiredMixin, ListView):
+    model = Ticket
+    template_name = "review/post.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        tickets = [{'content': ticket, 'timestamp': ticket.time_created}
+                   for ticket in Ticket.objects.filter(user=self.request.user)]
+        reviews = [{'content': review, 'timestamp': review.time_created}
+                   for review in Review.objects.filter(user=self.request.user)]
+
+        posts = sorted(tickets + reviews,
+                       key=lambda item: item['timestamp'], reverse=True)
+
+        context['posts'] = posts
         return context
 
 
