@@ -26,8 +26,17 @@
     {% if request.user == ticket.user %}
         <div class="text-center">
             <p><a href="{% url 'ticket_update' ticket.pk %}" class="bg-gray-800 hover:bg-gray-700 text-cyan-300 font-bold py-2 px-4 w-auto rounded focus:outline-none focus:shadow-outline">Modifier</a> |
+            {% if not reviewed  %}
+                <a href="{% url 'review_create' ticket.pk %}" class="bg-gray-800 hover:bg-gray-700 text-cyan-300 font-bold py-2 px-4 w-auto rounded focus:outline-none focus:shadow-outline">Créer une critique</a> |
+            {% endif %}
             <a href="{% url 'ticket_delete' ticket.pk %}" class="bg-red-900 hover:bg-red-800 text-cyan-300 font-bold py-2 px-4 w-auto rounded focus:outline-none focus:shadow-outline">Suprimer</a></p>
         </div>
+        {% else %}
+            {% if not reviewed %}
+                <div class="text-center">
+                    <p><a href="{% url 'review_create' ticket.pk %}" class="bg-gray-800 hover:bg-gray-700 text-cyan-300 font-bold py-2 px-4 w-auto rounded focus:outline-none focus:shadow-outline">Créer une critique</a>
+                </div>
+            {% endif %}
     {% endif %}
         
 </div>

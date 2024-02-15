@@ -37,12 +37,17 @@
                             {% if request.user == card.content.user %}
                                 <div class="text-center">
                                     <p><a href="{% url 'ticket_update' card.content.pk %}" class="bg-gray-800 hover:bg-gray-700 text-cyan-300 font-bold py-2 px-4 w-auto rounded focus:outline-none focus:shadow-outline">Modifier</a> |
-                                    <a href="{% url 'ticket_delete' card.content.pk %}" class="bg-red-900 hover:bg-red-800 text-cyan-300 font-bold py-2 px-4 w-auto rounded focus:outline-none focus:shadow-outline">Suprimer</a></p>
+                                {% if not card.reviewed %}
+                                    <a href="{% url 'review_create' card.content.id %}" class="bg-gray-800 hover:bg-gray-700 text-cyan-300 font-bold py-2 px-4 w-auto rounded focus:outline-none focus:shadow-outline">Créer une critique</a> |
+                                {% endif %}
+                                    <a href="{% url 'ticket_delete' card.content.pk %}" class="bg-red-900 hover:bg-red-800 text-cyan-300 font-bold py-2 px-4 w-auto rounded focus:outline-none focus:shadow-outline">Suprimer</a> 
                                 </div>
                             {% else %}
-                                <div class="text-center">
-                                    <p><a href="{% url 'review_create' card.content.id %}" class="bg-gray-800 hover:bg-gray-700 text-cyan-300 font-bold py-2 px-4 w-auto rounded focus:outline-none focus:shadow-outline">Créer une critique</a>
-                                </div>
+                                {% if not card.reviewed %}
+                                    <div class="text-center">
+                                        <p><a href="{% url 'review_create' card.content.id %}" class="bg-gray-800 hover:bg-gray-700 text-cyan-300 font-bold py-2 px-4 w-auto rounded focus:outline-none focus:shadow-outline">Créer une critique</a>
+                                    </div>
+                                {% endif %}
                             {% endif %}
                         </div>
                     <br>

@@ -21,7 +21,7 @@ class TicketListView(LoginRequiredMixin, ListView):
             user=self.request.user).values_list('followed_user', flat=True)
         ticket_author = Ticket.objects.filter(user=self.request.user)
 
-        tickets = [{'content': ticket, 'timestamp': ticket.time_created}
+        tickets = [{'content': ticket, 'timestamp': ticket.time_created, 'reviewed': Review.objects.filter(user=self.request.user, ticket=ticket).exists()}
                    for ticket in Ticket.objects.filter(Q(user__in=user_followed) |
                                                        Q(user=self.request.user))]
         reviews = [{'content': review, 'timestamp': review.time_created}
@@ -45,7 +45,7 @@ class PostListView(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        tickets = [{'content': ticket, 'timestamp': ticket.time_created}
+        tickets = [{'content': ticket, 'timestamp': ticket.time_created, 'reviewed': Review.objects.filter(user=self.request.user, ticket=ticket).exists()}
                    for ticket in Ticket.objects.filter(user=self.request.user)]
         reviews = [{'content': review, 'timestamp': review.time_created}
                    for review in Review.objects.filter(user=self.request.user)]
@@ -77,6 +77,12 @@ class TicketCreateView(LoginRequiredMixin, CreateView):
 class TicketDetailView(LoginRequiredMixin, DetailView):
     model = Ticket
     template_name = "review/ticket.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['reviewed'] = Review.objects.filter(
+            user=self.request.user, ticket=self.object).exists()
+        return context
 
 
 class TicketUpdateView(UserPassesTestMixin, UpdateView):
