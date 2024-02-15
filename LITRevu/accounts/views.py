@@ -36,3 +36,11 @@ class HomeView(View):
 
             'login_form': AuthenticationForm(),
         })
+
+    def post(self, request, *args, **kwargs):
+        login_form = AuthenticationForm(request, data=request.POST)
+        if login_form.is_valid():
+            login(request, login_form.get_user())
+            return redirect('flux')
+        else:
+            return render(request, 'home.html', {'login_form': login_form})
