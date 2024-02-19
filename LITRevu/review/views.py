@@ -21,7 +21,9 @@ class TicketListView(LoginRequiredMixin, ListView):
             user=self.request.user).values_list('followed_user', flat=True)
         ticket_author = Ticket.objects.filter(user=self.request.user)
 
-        tickets = [{'content': ticket, 'timestamp': ticket.time_created, 'reviewed': Review.objects.filter(user=self.request.user, ticket=ticket).exists()}
+        tickets = [{'content': ticket,
+                    'timestamp': ticket.time_created,
+                    'reviewed': Review.objects.filter(user=self.request.user, ticket=ticket).exists()}
                    for ticket in Ticket.objects.filter(Q(user__in=user_followed) |
                                                        Q(user=self.request.user))]
         reviews = [{'content': review, 'timestamp': review.time_created}
@@ -33,7 +35,6 @@ class TicketListView(LoginRequiredMixin, ListView):
                       key=lambda item: item['timestamp'], reverse=True)
 
         context['flux'] = flux
-        # context['review'] = Review.objects.all()
         return context
 
 
@@ -45,7 +46,9 @@ class PostListView(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        tickets = [{'content': ticket, 'timestamp': ticket.time_created, 'reviewed': Review.objects.filter(user=self.request.user, ticket=ticket).exists()}
+        tickets = [{'content': ticket,
+                    'timestamp': ticket.time_created,
+                    'reviewed': Review.objects.filter(user=self.request.user, ticket=ticket).exists()}
                    for ticket in Ticket.objects.filter(user=self.request.user)]
         reviews = [{'content': review, 'timestamp': review.time_created}
                    for review in Review.objects.filter(user=self.request.user)]
