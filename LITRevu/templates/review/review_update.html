@@ -30,33 +30,29 @@
     
     <form action="" method="post" class="flex flex-col items-start space-y-4">{% csrf_token %}
         {% csrf_token %}
-                {% if form.non_field_errors %}
-                    {{ form.non_field_errors }}
-                {% endif %}
-                <div class="flex flex-col w-full ">
-                <h1>Titre</h1>
-                    {{ form.headline.errors }}
-                    <label for="{{ form.headline.id_for_label }}"></label>
-                    {% render_field form.headline class="appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder=form.headline.label %}
-                </div>
-                <div class="flex ">
-                <h1>Note</h1>
-                    {{ form.rating.errors }}
-                    <label for="{{ form.rating.id_for_label }}"></label>
-                    {% for choice in form.rating.field.choices %}
-                    <label class="inline-flex items-center m-2">
-                        <input type="radio" class="form-radio text-indigo-600" name="{{ form.rating.html_name }}" value="{{ choice.0 }}" {% if form.rating.value == choice.0 %}checked{% endif %}>
-                        <span class="ml-2">  - {{choice.0 }}</span>
-                
-                    </label>
-                    {% endfor %}
-                </div>
-                <div class="flex flex-col w-full">
-                <h1>Commentaire</h1>
-                    {{ form.body.errors }}
-                    <label for="{{ form.body.id_for_label }}"></label>
-                    {% render_field form.body class="appearance-none border rounded h-64 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder=form.body.label %}
-                </div>
+        {% if form.non_field_errors %}
+            {{ form.non_field_errors }}
+        {% endif %}
+        <div class="flex flex-col w-full ">
+            {{ form.headline.errors }}
+            <label for="{{ form.headline.id_for_label }}">Titre</label>
+            {% render_field form.headline class="appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder=form.headline.label %}
+        </div>
+        <fieldset class="flex">
+            {{ form.rating.errors }}
+            <legend class="font-semibold">Note</legend>
+            {% for choice in form.rating.field.choices %}
+                <label class="inline-flex items-center m-2">
+                    <input type="radio" class="form-radio text-indigo-600" name="{{ form.rating.html_name }}" value="{{ choice.0 }}" {% if form.rating.value == choice.0 %}checked{% endif %}>
+                    <span class="ml-2">  - {{choice.0 }}</span>
+                </label>
+            {% endfor %}
+        </fieldset>
+        <div class="flex flex-col w-full">
+            {{ form.body.errors }}
+            <label for="{{ form.body.id_for_label }}">Commentaire</label>
+            {% render_field form.body class="appearance-none border rounded h-64 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder=form.body.label %}
+        </div>
 
         <button class="bg-gray-800 hover:bg-gray-700 text-slate-200 hover:text-cyan-300 font-bold py-2 px-4 w-auto rounded focus:outline-none focus:shadow-outline" type="submit">Modifier</button>
     </form>
