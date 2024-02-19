@@ -13,7 +13,7 @@
             <h1 class="font-sans text-2xl">Inscrivez-vous maintenant</h1>
             <form method="post" action="{% url 'signup' %}" class="mt-12">{% csrf_token %}
                 {{ form.as_p }}
-                <button type="submit" class="bg-gray-800 hover:bg-gray-700 text-cyan-300 font-bold py-2 px-4 w-auto rounded focus:outline-none focus:shadow-outline">S'inscrire</button>
+                <button type="submit" class="bg-gray-800 hover:bg-gray-700 text-slate-200 hover:text-cyan-300 font-bold py-2 px-4 w-auto rounded focus:outline-none focus:shadow-outline">S'inscrire</button>
             </form>
         </div>
     
@@ -32,7 +32,7 @@
                     </div>
                 {% endfor %}
                 <div class=" flex w-60 flex-col">
-                    <button type="submit" class="self-end bg-gray-800 hover:bg-gray-700 text-cyan-300 font-bold py-2 px-4 w-auto rounded focus:outline-none focus:shadow-outline ">Se connecter</button>
+                    <button type="submit" class="self-end bg-gray-800 hover:bg-gray-700 text-slate-200 hover:text-cyan-300 font-bold py-2 px-4 w-auto rounded focus:outline-none focus:shadow-outline ">Se connecter</button>
                 </div>
             </form>
         </div>

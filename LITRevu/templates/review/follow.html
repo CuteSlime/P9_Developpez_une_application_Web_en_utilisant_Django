@@ -1,46 +1,51 @@
 {% extends "base.html" %}
-
+{% load widget_tweaks %}
 {% block title %}Flux{% endblock title %}
 
     
 
 {% block content %}
 
-    <div class="bg-slate-200 rounded mx-auto w-4/5 p-6 my-6">
-        <h2>Suivre d'autres utilisateurs</h2>
-        <form method="POST">
+    <div class="bg-slate-300 rounded mx-auto w-4/5 p-6 my-6">
+        <h2 class="flex justify-center">Suivre d'autres utilisateurs</h2>
+
+        <form method="POST" class="flex">
             {% csrf_token %}
-            {{ form.username.label_tag }} {{ form.username }}
+            <div class="flex justify-center w-4/5 m-6">
+            <label for="{{ form.username.id_for_label }}"></label>
+            {% render_field form.username class="appearance-none border rounded w-4/5 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder=form.title.label %}
+        </div>
+            <input type="hidden" name="action" value="follow">
+            <button type="submit" class="bg-gray-800 hover:bg-gray-700 text-slate-200 hover:text-cyan-300 font-bold py-2 px-4 w-auto rounded focus:outline-none focus:shadow-outline">S'abonner</button>
+        </form>
             {% for error in form.username.errors %}
-                <div class="alert alert-danger">
+                <div class="flex justify-center alert alert-danger">
                     {{ error }}
                 </div>
             {% endfor %}
-            <input type="hidden" name="action" value="follow">
-            <button type="submit" class="bg-gray-800 hover:bg-gray-700 text-cyan-300 font-bold py-2 px-4 w-auto rounded focus:outline-none focus:shadow-outline">S'abonner</button>
-        </form>
-        <h2>Abonnements</h2>
+        <h2 class="flex justify-center">Abonnements</h2>
         <div class="flex"></div>
-        <table class="w-full">
-            <tbody class="border-2 border-neutral-950 ">
-                {% for user_follow in user_follows %}
-                    <tr class="flex justify-between">
-                            <td class="border-r-2"><p>{{ user_follow.followed_user }}</p></td>
-                            <td class="border-l-2"><form method="POST">
-                                {% csrf_token %}
-                                {{ form.non_field_errors }}
-                                <input type="hidden" name="username" value="{{ user_follow.followed_user.username }}">
-                                <input type="hidden" name="action" value="unfollow">
-                                <button type="submit" class="bg-red-900 hover:bg-red-800 text-cyan-300 font-bold py-2 px-4 w-auto rounded focus:outline-none focus:shadow-outline">ce désabonner</button>
-                            </form></td>
-                    </tr>
-                {% endfor %}
-                
-            </tbody>
-        </table>
+        <div class="w-full border-x-2 border-t-2 border-neutral-950">
+            {% for user_follow in user_follows %}
+                <div class="flex justify-between border-b-2  border-neutral-950">
+                    <div class=" p-2">
+                        <p>{{ user_follow.followed_user }}</p>
+                    </div>
+                    <div class="border-l-2 p-2  border-neutral-950">
+                        <form method="POST">
+                            {% csrf_token %}
+                            {{ form.non_field_errors }}
+                            <input type="hidden" name="username" value="{{ user_follow.followed_user.username }}">
+                            <input type="hidden" name="action" value="unfollow">
+                            <button type="submit" class="bg-red-900 hover:bg-red-800 text-slate-200 hover:text-cyan-300 font-bold py-2 px-4 w-auto rounded focus:outline-none focus:shadow-outline">ce désabonner</button>
+                        </form>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
 
 
-        <h2>Abonnés</h2>
+        <h2 class="flex justify-center">Abonnés</h2>
         {% for user_follow in request.user.followed_by.all %}
             <p>{{ user_follow.user.username }}</p>
         {% endfor %}

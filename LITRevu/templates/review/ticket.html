@@ -8,7 +8,7 @@
     
 
 {% block content %}
-<div class="bg-slate-200 rounded mx-auto w-4/5 p-6 mt-6">
+<div class="bg-slate-300 rounded mx-auto w-4/5 p-6 mt-6">
     <div class="flex justify-between">
         <span>{{ ticket.user }} à demandé une critique</span><span>{{ ticket.time_created }}</span>
     </div>
@@ -25,23 +25,23 @@
 
     {% if request.user == ticket.user %}
         <div class="text-center">
-            <p><a href="{% url 'ticket_update' ticket.pk %}" class="bg-gray-800 hover:bg-gray-700 text-cyan-300 font-bold py-2 px-4 w-auto rounded focus:outline-none focus:shadow-outline">Modifier</a> |
+            <p><a href="{% url 'ticket_update' ticket.pk %}" class="bg-gray-800 hover:bg-gray-700 text-slate-200 hover:text-cyan-300 font-bold py-2 px-4 w-auto rounded focus:outline-none focus:shadow-outline">Modifier</a> |
             {% if not reviewed  %}
-                <a href="{% url 'review_create' ticket.pk %}" class="bg-gray-800 hover:bg-gray-700 text-cyan-300 font-bold py-2 px-4 w-auto rounded focus:outline-none focus:shadow-outline">Créer une critique</a> |
+                <a href="{% url 'review_create' ticket.pk %}" class="bg-gray-800 hover:bg-gray-700 text-slate-200 hover:text-cyan-300 font-bold py-2 px-4 w-auto rounded focus:outline-none focus:shadow-outline">Créer une critique</a> |
             {% endif %}
-            <a href="{% url 'ticket_delete' ticket.pk %}" class="bg-red-900 hover:bg-red-800 text-cyan-300 font-bold py-2 px-4 w-auto rounded focus:outline-none focus:shadow-outline">Suprimer</a></p>
+            <a href="{% url 'ticket_delete' ticket.pk %}" class="bg-red-900 hover:bg-red-800 text-slate-200 hover:text-cyan-300 font-bold py-2 px-4 w-auto rounded focus:outline-none focus:shadow-outline">Suprimer</a></p>
         </div>
         {% else %}
             {% if not reviewed %}
                 <div class="text-center">
-                    <p><a href="{% url 'review_create' ticket.pk %}" class="bg-gray-800 hover:bg-gray-700 text-cyan-300 font-bold py-2 px-4 w-auto rounded focus:outline-none focus:shadow-outline">Créer une critique</a>
+                    <p><a href="{% url 'review_create' ticket.pk %}" class="bg-gray-800 hover:bg-gray-700 text-slate-200 hover:text-cyan-300 font-bold py-2 px-4 w-auto rounded focus:outline-none focus:shadow-outline">Créer une critique</a>
                 </div>
             {% endif %}
     {% endif %}
         
 </div>
 {% for review in ticket.review_set.all %}
-    <div class="bg-slate-200 rounded mx-auto w-4/5 p-6 mt-6">
+    <div class="bg-slate-300 rounded mx-auto w-4/5 p-6 mt-6">
         
         <div class="flex justify-between">
             <span>{{ review.user }} à publié une critique</span><span>{{ review.time_created }}</span>
@@ -53,8 +53,8 @@
         <br>
         {% if request.user == review.user %}
             <div class="text-center">
-                <p><a href="{% url 'review_update' review.pk %}" class="bg-gray-800 hover:bg-gray-700 text-cyan-300 font-bold py-2 px-4 w-auto rounded focus:outline-none focus:shadow-outline">Modifier</a> |
-                <a href="{% url 'review_delete' review.pk %}" class="bg-red-900 hover:bg-red-800 text-cyan-300 font-bold py-2 px-4 w-auto rounded focus:outline-none focus:shadow-outline">Suprimer</a></p>
+                <p><a href="{% url 'review_update' review.pk %}" class="bg-gray-800 hover:bg-gray-700 text-slate-200 hover:text-cyan-300 font-bold py-2 px-4 w-auto rounded focus:outline-none focus:shadow-outline">Modifier</a> |
+                <a href="{% url 'review_delete' review.pk %}" class="bg-red-900 hover:bg-red-800 text-slate-200 hover:text-cyan-300 font-bold py-2 px-4 w-auto rounded focus:outline-none focus:shadow-outline">Suprimer</a></p>
             </div>
         {% endif %}
     </div>
