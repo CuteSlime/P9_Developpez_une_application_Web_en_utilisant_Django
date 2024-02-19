@@ -21,7 +21,7 @@ class CustomUserCreationForm(UserCreationForm):
     )
     password2 = forms.CharField(
         widget=forms.PasswordInput,
-        label='Confirmer mod de passe',
+        label='Confirmer mot de passe',
         error_messages={
             'required': '',
         }

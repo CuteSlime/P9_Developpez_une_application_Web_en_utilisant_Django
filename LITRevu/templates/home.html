@@ -27,7 +27,7 @@
                 {% endif %}
                 {% for field in login_form %}
                     <div class="flex flex-col">
-                        
+                        <label for="{{ field.id_for_label }}">{{field.label}}</label>
                         {% render_field field class="appearance-none border rounded w-60 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder=field.label%}
                     </div>
                 {% endfor %}
