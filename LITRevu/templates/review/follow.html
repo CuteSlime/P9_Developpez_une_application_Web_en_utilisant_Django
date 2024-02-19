@@ -7,29 +7,31 @@
 {% block content %}
 
     <div class="bg-slate-300 rounded mx-auto w-4/5 p-6 my-6">
-        <h2 class="flex justify-center">Suivre d'autres utilisateurs</h2>
+        <h2 class="flex justify-center font-semibold text-xl">Suivre d'autres utilisateurs</h2>
 
         <form method="POST" class="flex">
             {% csrf_token %}
-            <div class="flex justify-center w-4/5 m-6">
-            <label for="{{ form.username.id_for_label }}"></label>
-            {% render_field form.username class="appearance-none border rounded w-4/5 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder=form.title.label %}
-        </div>
+            <div class="flex flex-col w-full">
+            <label for="{{ form.username.id_for_label }}" class="font-semibold">Utilisateur à suivre</label>
+            {% render_field form.username class="appearance-none border rounded mr-2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder=form.title.label %}
+            </div>
             <input type="hidden" name="action" value="follow">
-            <button type="submit" class="bg-gray-800 hover:bg-gray-700 text-slate-200 hover:text-cyan-300 font-bold py-2 px-4 w-auto rounded focus:outline-none focus:shadow-outline">S'abonner</button>
+            <button type="submit" class="bg-gray-800 hover:bg-gray-700 text-slate-200 hover:text-cyan-300 font-bold py-2 px-4 my-6 w-auto rounded focus:outline-none focus:shadow-outline">S'abonner</button>
+            
         </form>
             {% for error in form.username.errors %}
                 <div class="flex justify-center alert alert-danger">
                     {{ error }}
                 </div>
             {% endfor %}
-        <h2 class="flex justify-center">Abonnements</h2>
+            <br>
+        <h2 class="flex justify-center font-semibold text-xl">Abonnements</h2>
         <div class="flex"></div>
         <div class="w-full border-x-2 border-t-2 border-neutral-950">
             {% for user_follow in user_follows %}
                 <div class="flex justify-between border-b-2  border-neutral-950">
                     <div class=" p-2">
-                        <p>{{ user_follow.followed_user }}</p>
+                        <p class="font-semibold">{{ user_follow.followed_user }}</p>
                     </div>
                     <div class="border-l-2 p-2  border-neutral-950">
                         <form method="POST">
@@ -44,11 +46,15 @@
             {% endfor %}
         </div>
 
-
-        <h2 class="flex justify-center">Abonnés</h2>
-        {% for user_follow in request.user.followed_by.all %}
-            <p>{{ user_follow.user.username }}</p>
-        {% endfor %}
+        <br>
+        <h2 class="flex justify-center font-semibold text-xl">Abonnés</h2>
+            <div class=" border-x-2 border-t-2 border-neutral-950">
+                {% for user_follow in request.user.followed_by.all %}
+                    <div class=" p-2 border-b-2 border-neutral-950">
+                        <p class="font-semibold">{{ user_follow.user.username }}</p>        
+                    </div>
+                {% endfor %}
+            </div>
         
     </div>
 
