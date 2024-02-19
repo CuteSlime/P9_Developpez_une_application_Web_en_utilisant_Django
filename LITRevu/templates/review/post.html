@@ -6,7 +6,7 @@
     
 
 {% block content %}
-    
+    <h1 class=" text-3xl flex justify-center m-auto">Vos posts</h1>
         {% for post in posts %}
             {% if post.content|class_name == "Ticket" %}
                 <div>

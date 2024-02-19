@@ -6,6 +6,7 @@
     
 
 {% block content %}
+<h1 class=" text-3xl flex justify-center m-auto">Créer un ticket</h1>
 <form action="" method="post">{% csrf_token %}
     {% if form.non_field_errors %}
         {{ form.non_field_errors }}
