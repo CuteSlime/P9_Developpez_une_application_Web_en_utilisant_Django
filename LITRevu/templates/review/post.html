@@ -11,9 +11,9 @@
             {% if post.content|class_name == "Ticket" %}
                 <div>
                     <a href="{% url 'ticket' post.content.pk %}" class="">
-                        <div class="bg-slate-200 rounded mx-auto w-4/5 p-6 my-6">
+                        <div class="bg-slate-300 rounded mx-auto w-4/5 p-6 my-6">
                             <div class="flex justify-between">
-                            <span>{{ post.content.user }} à demandé une critique</span><span>{{ post.content.time_created }}</span>
+                            <span>{% if post.content.user == request.user %} vous avez {% else %} {{ card.content.user }} à {% endif %}demandé une critique</span><span>{{ post.content.time_created }}</span>
                             </div>
                             <br>
                                 <h2>{{ post.content.title }}</h2>
@@ -31,20 +31,20 @@
                             </div>
                             <br>
                             <div class="text-center">
-                                <p><a href="{% url 'ticket_update' post.content.pk %}" class="bg-gray-800 hover:bg-gray-700 text-cyan-300 font-bold py-2 px-4 w-auto rounded focus:outline-none focus:shadow-outline">Modifier</a> |
+                                <p><a href="{% url 'ticket_update' post.content.pk %}" class="bg-gray-800 hover:bg-gray-700 text-slate-200 hover:text-cyan-300 font-bold py-2 px-4 w-auto rounded focus:outline-none focus:shadow-outline">Modifier</a> |
                                 {% if not card.reviewed %}
-                                    <a href="{% url 'review_create' post.content.pk %}" class="bg-gray-800 hover:bg-gray-700 text-cyan-300 font-bold py-2 px-4 w-auto rounded focus:outline-none focus:shadow-outline">Créer une critique</a> |
+                                    <a href="{% url 'review_create' post.content.pk %}" class="bg-gray-800 hover:bg-gray-700 text-slate-200 hover:text-cyan-300 font-bold py-2 px-4 w-auto rounded focus:outline-none focus:shadow-outline">Créer une critique</a> |
                                 {% endif %}
-                                <a href="{% url 'ticket_delete' post.content.pk %}" class="bg-red-900 hover:bg-red-800 text-cyan-300 font-bold py-2 px-4 w-auto rounded focus:outline-none focus:shadow-outline">Suprimer</a></p>
+                                <a href="{% url 'ticket_delete' post.content.pk %}" class="bg-red-900 hover:bg-red-800 text-slate-200 hover:text-cyan-300 font-bold py-2 px-4 w-auto rounded focus:outline-none focus:shadow-outline">Suprimer</a></p>
                             </div>
                         </div>
                     <br>
                 </div>
             {% elif post.content|class_name == "Review" %}
-                <div class="bg-slate-200 rounded mx-auto w-4/5 p-6 mt-6">
+                <div class="bg-slate-300 rounded mx-auto w-4/5 p-6 mt-6">
         
                 <div class="flex justify-between">
-                    <span>{{ post.content.user }} à publié une critique</span><span>{{ post.content.time_created }}</span>
+                    <span>{% if post.content.user == request.user %} vous avez {% else %} {{ card.content.user }} à {% endif %}publié une critique</span><span>{{ post.content.time_created }}</span>
                 </div>
                 <br>
                 <h2 class="text-2xl">{{ post.content.headline }} - {{ post.content.rating|stars }}</h2>
@@ -52,8 +52,8 @@
                 <p>{{ post.content.body }}</p>
                 <br>
                 <div class="text-center">
-                    <p><a href="{% url 'review_update' post.content.pk %}" class="bg-gray-800 hover:bg-gray-700 text-cyan-300 font-bold py-2 px-4 w-auto rounded focus:outline-none focus:shadow-outline">Modifier</a> |
-                    <a href="{% url 'review_delete' post.content.pk %}" class="bg-red-900 hover:bg-red-800 text-cyan-300 font-bold py-2 px-4 w-auto rounded focus:outline-none focus:shadow-outline">Suprimer</a></p>
+                    <p><a href="{% url 'review_update' post.content.pk %}" class="bg-gray-800 hover:bg-gray-700 text-slate-200 hover:text-cyan-300 font-bold py-2 px-4 w-auto rounded focus:outline-none focus:shadow-outline">Modifier</a> |
+                    <a href="{% url 'review_delete' post.content.pk %}" class="bg-red-900 hover:bg-red-800 text-slate-200 hover:text-cyan-300 font-bold py-2 px-4 w-auto rounded focus:outline-none focus:shadow-outline">Suprimer</a></p>
                 </div>
             </div>
             <br>
