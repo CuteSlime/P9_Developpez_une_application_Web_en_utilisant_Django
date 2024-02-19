@@ -6,54 +6,59 @@
 
 {% block content %}
 
-
+<h1 class="flex justify-center text-2xl font-semibold">Créer une critique</h1>
     <form action="" method="post">{% csrf_token %}
-    <div class="bg-slate-200 rounded mx-auto w-4/5 p-6 my-6">
+    <div class="bg-slate-300 rounded mx-auto w-4/5 p-6 my-6">
+    <h2 class="flex justify-start text-xl font-semibold">Article/Livre</h2>
         {% if form.non_field_errors %}
             {{ form.non_field_errors }}
         {% endif %}
 
-        <div class="text-center mx-auto  p-6 my-6">
-            <div class="flex justify-center m-6">
+       
+            <div class="flex flex-col w-full ">
                 {{ form.title.errors }}
-                <label for="{{ form.title.id_for_label }}"></label>
-                {% render_field form.title class="appearance-none border rounded w-4/5 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder=form.title.label %}
+                <label for="{{ form.title.id_for_label }}" class="font-semibold">Titre</label>
+                {% render_field form.title class="appearance-none border rounded  py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder=form.title.label %}
             </div>
-            <div class="flex justify-center m-6">
+            <div class="flex flex-col w-full ">
                 {{ form.description.errors }}
-                <label for="{{ form.description.id_for_label }}"></label>
-                {% render_field form.description class="appearance-none border rounded w-4/5 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder=form.description.label %}
+                <label for="{{ form.description.id_for_label }}" class="font-semibold">Description</label>
+                {% render_field form.description class="appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder=form.description.label %}
             </div>
-            <div class="flex justify-start m-6">
+            <div class="flex flex-col w-full ">
                 {{ form.image.errors }}
-                <label for="{{ form.image.id_for_label }}"></label>
-                {% render_field form.image class="appearance-none border rounded w-96 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder=form.image.label %}
+                <label for="{{ form.image.id_for_label }}" class="font-semibold">Couverture</label>
+                {% render_field form.image class="appearance-none border rounded  py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder=form.image.label %}
             </div>
-        </div>
+        
     </div>
-        <div class="text-center mx-auto  p-6 my-6">
-            <div class="bg-slate-200 rounded mx-auto w-4/5 p-6 my-6">
-                {% if review.non_field_errors %}
-                    {{ review.non_field_errors }}
-                {% endif %}
-                <div class="flex flex-col">
-                    {{ review.headline.errors }}
-                    <label for="{{ review.headline.id_for_label }}"></label>
-                    {% render_field review.headline class="appearance-none border rounded w-96 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder=review.headline.label %}
-                </div>
-                <div class="flex flex-col">
-                    {{ review.body.errors }}
-                    <label for="{{ review.body.id_for_label }}"></label>
-                    {% render_field review.body class="appearance-none border rounded w-96 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder=review.body.label %}
-                </div>
-                <div class="flex flex-col">
-                    {{ review.rating.errors }}
-                    <label for="{{ review.rating.id_for_label }}"></label>
-                    {% render_field review.rating class="appearance-none border rounded w-96 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder=review.rating.label %}
-                </div>
-            </div>
-            <button class="bg-gray-800 hover:bg-gray-700 text-cyan-300 font-bold py-2 px-4 w-auto rounded focus:outline-none focus:shadow-outline" type="submit">Créer</button>
+    <div class="bg-slate-300 rounded mx-auto w-4/5 p-6 mt-6">
+        {% if review.non_field_errors %}
+            {{ review.non_field_errors }}
+        {% endif %}
+        <div class="flex flex-col w-full ">
+            {{ review.headline.errors }}
+            <label for="{{ review.headline.id_for_label }}" class="font-semibold">Titre</label>
+            {% render_field review.headline class="appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder=form.headline.label %}
         </div>
+        <fieldset class="flex">
+            {{ review.rating.errors }}
+            <legend class="font-semibold">Note</legend>
+            {% for choice in review.rating.field.choices %}
+            <label class="inline-flex items-center m-2">
+                <input type="radio" class="review-radio text-indigo-600" name="{{ review.rating.html_name }}" value="{{ choice.0 }}" {% if form.rating.value == choice.0 %}checked{% endif %}>
+                <span class="ml-2">  - {{choice.0 }}</span>
+            </label>
+            {% endfor %}
+        </fieldset>
+        <div class="flex flex-col w-full">
+            {{ review.body.errors }}
+            <label for="{{ review.body.id_for_label }}" class="font-semibold">Commentaire</label>
+            {% render_field review.body class="appearance-none border rounded h-64 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder=form.body.label %}
+        </div>
+
+        <button class="bg-gray-800 hover:bg-gray-700 text-slate-200 hover:text-cyan-300 font-bold py-2 px-4 w-auto rounded focus:outline-none focus:shadow-outline" type="submit">Envoyer</button>
+    </div>
     </form>
 
 
