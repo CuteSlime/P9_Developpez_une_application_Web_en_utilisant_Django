@@ -6,6 +6,8 @@
     
 
 {% block content %}
+    <h1 class="flex justify-center text-2xl font-semibold">Flux</h1>
+    <br>
     <div class="flex space-x-4 justify-center">
         <a href="{% url 'ticket_create' %}" class="bg-gray-800 hover:bg-gray-700 text-slate-200 hover:text-cyan-300 font-bold py-2 px-4 mx-6 w-auto rounded focus:outline-none focus:shadow-outline">Demander une critique</a>
         <a href="{% url 'ticket_review_create' %}" class="bg-gray-800 hover:bg-gray-700 text-slate-200 hover:text-cyan-300 font-bold py-2 px-4 mx-6 w-auto rounded focus:outline-none focus:shadow-outline">Créer une critique</a>

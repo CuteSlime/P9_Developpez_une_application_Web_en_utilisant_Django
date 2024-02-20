@@ -5,7 +5,7 @@
     
 
 {% block content %}
-
+    <h1 class="flex justify-center text-2xl font-semibold">Abonnements</h1>
     <div class="bg-slate-300 rounded mx-auto w-4/5 p-6 my-6">
         <h2 class="flex justify-center font-semibold text-xl">Suivre d'autres utilisateurs</h2>
 
@@ -27,13 +27,13 @@
             <br>
         <h2 class="flex justify-center font-semibold text-xl">Abonnements</h2>
         <div class="flex"></div>
-        <div class="w-full border-x-2 border-t-2 border-neutral-950">
+        <div class="w-full border-x-2 border-t-2 border-gray-800">
             {% for user_follow in user_follows %}
-                <div class="flex justify-between border-b-2  border-neutral-950">
+                <div class="flex justify-between border-b-2  border-gray-800">
                     <div class=" p-2">
                         <p class="font-semibold">{{ user_follow.followed_user }}</p>
                     </div>
-                    <div class="border-l-2 p-2  border-neutral-950">
+                    <div class="border-l-2 p-2  border-gray-800">
                         <form method="POST">
                             {% csrf_token %}
                             {{ form.non_field_errors }}
@@ -48,9 +48,9 @@
 
         <br>
         <h2 class="flex justify-center font-semibold text-xl">Abonnés</h2>
-            <div class=" border-x-2 border-t-2 border-neutral-950">
+            <div class=" border-x-2 border-t-2 border-gray-800">
                 {% for user_follow in request.user.followed_by.all %}
-                    <div class=" p-2 border-b-2 border-neutral-950">
+                    <div class=" p-2 border-b-2 border-gray-800">
                         <p class="font-semibold">{{ user_follow.user.username }}</p>        
                     </div>
                 {% endfor %}
