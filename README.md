@@ -11,7 +11,7 @@ Pour que le site s'affiche correctement il est nécessaire d'installer Node.js a
 puis suivre l'installation de django_tailwind.
 
 
-## installer le projet
+## installer le projet (Windows)
 
 - Commencer par cloner le projet avec git clone
 
@@ -19,8 +19,27 @@ puis suivre l'installation de django_tailwind.
     ```
     python -m venv .env
     ```
-
+- Activer l'environement virtuel :
+  ```
+     .env\Scripts\activate
+  ```
 - Installer toute les dépendance :
     ```
         pip install -r requirements.txt
     ```
+- allez au dossier de l'application : 
+```
+cd LITrevu
+```
+- Assurer d'avoir installer node.js et d'avoir le bon PATH dans le fichier setting.py à la derniere ligne.(LITRevu/setting.py)
+
+- installer tailwinds : 
+```
+python manage.py tailwind install
+python manage.py tailwind build
+```
+
+- (Optionnel) si vous souhaitez utiliser le live serveur pour le css lancer le avec : 
+```
+python manage.py tailwind start
+```
