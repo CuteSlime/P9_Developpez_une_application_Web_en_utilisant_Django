@@ -11,6 +11,10 @@ from .forms import RatingForm, FollowUserForm
 
 # Flux
 class TicketListView(LoginRequiredMixin, ListView):
+    """
+      displays a list of all tickets created by the logged-in user and the users they follow.
+    """
+
     model = Ticket
     template_name = "review/flux.html"
 
@@ -40,6 +44,10 @@ class TicketListView(LoginRequiredMixin, ListView):
 
 # Post
 class PostListView(LoginRequiredMixin, ListView):
+    """
+      displays a list of all posts (tickets and reviews) created by the logged-in user.
+    """
+
     model = Ticket
     template_name = "review/post.html"
 
@@ -61,6 +69,10 @@ class PostListView(LoginRequiredMixin, ListView):
 
 
 class TicketCreateView(LoginRequiredMixin, CreateView):
+    """
+      allows the logged-in user to create a new ticket.
+    """
+
     model = Ticket
     template_name = "review/ticket_new.html"
     success_url = reverse_lazy("flux")
@@ -74,10 +86,13 @@ class TicketCreateView(LoginRequiredMixin, CreateView):
         form.instance.user = self.request.user
         return super().form_valid(form)
 
+
 # Ticket
-
-
 class TicketDetailView(LoginRequiredMixin, DetailView):
+    """
+      displays the details of a specific ticket.
+    """
+
     model = Ticket
     template_name = "review/ticket.html"
 
@@ -89,6 +104,10 @@ class TicketDetailView(LoginRequiredMixin, DetailView):
 
 
 class TicketUpdateView(UserPassesTestMixin, UpdateView):
+    """
+      allows the logged-in user to update a ticket they have created.
+    """
+
     raise_exception = True
     model = Ticket
     success_url = reverse_lazy("flux")
@@ -106,6 +125,10 @@ class TicketUpdateView(UserPassesTestMixin, UpdateView):
 
 
 class TicketDeleteView(UserPassesTestMixin, DeleteView):
+    """
+      allows the logged-in user to delete a ticket they have created.
+    """
+
     raise_exception = True
     model = Ticket
     template_name = "review/ticket_delete.html"
@@ -118,6 +141,10 @@ class TicketDeleteView(UserPassesTestMixin, DeleteView):
 
 # create and review a ticket at the same time
 class TicketReviewCreateView(LoginRequiredMixin, CreateView):
+    """
+    Allows the logged-in user to create a new ticket and review at the same time.
+    """
+
     model = Ticket
     template_name = "review/ticket_review_new.html"
     fields = ("title", "description", "image",)
@@ -145,10 +172,14 @@ class TicketReviewCreateView(LoginRequiredMixin, CreateView):
 
     def get_success_url(self):
         return reverse_lazy('flux')
+
+
 # review
-
-
 class ReviewCreateView(LoginRequiredMixin, CreateView):
+    """
+    Allows the logged-in user to create a new review for a specific ticket.
+    """
+
     model = Review
     template_name = "review/review_new.html"
     form_class = RatingForm
@@ -172,11 +203,19 @@ class ReviewCreateView(LoginRequiredMixin, CreateView):
 
 
 class ReviewListView(LoginRequiredMixin, ListView):
+    """
+    Displays a list of all reviews.
+    """
+
     model = Review
     template_name = "review/flux.html"
 
 
 class ReviewUpdateView(UserPassesTestMixin, UpdateView):
+    """
+    Allows the logged-in user to update a review they have created.
+    """
+
     raise_exception = True
     model = Review
     form_class = RatingForm
@@ -191,6 +230,10 @@ class ReviewUpdateView(UserPassesTestMixin, UpdateView):
 
 
 class ReviewDeleteView(UserPassesTestMixin, DeleteView):
+    """
+    Allows the logged-in user to delete a review they have created.
+    """
+
     raise_exception = True
     model = Review
     template_name = "review/review_delete.html"
@@ -205,6 +248,11 @@ class ReviewDeleteView(UserPassesTestMixin, DeleteView):
 
 # follower and followed
 class UserFollowsListView(LoginRequiredMixin, ListView):
+    """
+    Displays a list of all users that the logged-in user is following.
+    Allows the logged-in user to follow or unfollow other users.
+    """
+
     model = UserFollows
     template_name = 'review/follow.html'
     context_object_name = 'user_follows'

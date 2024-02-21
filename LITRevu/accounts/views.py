@@ -7,6 +7,10 @@ from .forms import CustomUserCreationForm
 
 
 class SignUpView(CreateView):
+    """
+    Handles user registration. After successful registration, the user is authenticated and redirected to the 'flux' page.
+    """
+
     form_class = CustomUserCreationForm
     success_url = reverse_lazy('flux')
     template_name = "registration/signup.html"
@@ -25,6 +29,12 @@ class SignUpView(CreateView):
 
 
 class HomeView(View):
+    """
+    Handles the home page view. If the user is authenticated, they are redirected to the 'flux' page. 
+    Otherwise, the login form is displayed. 
+    If the form is valid upon submission, the user is authenticated and redirected to the 'flux' page.
+    """
+
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             return redirect('flux')
