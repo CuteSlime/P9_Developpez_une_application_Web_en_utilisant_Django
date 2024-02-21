@@ -7,7 +7,7 @@
 {% block content %}
 
 <h1 class="flex justify-center text-2xl font-semibold">Créer une critique</h1>
-    <form action="" method="post">{% csrf_token %}
+    <form action="" method="post" enctype="multipart/form-data">{% csrf_token %}
     <div class="bg-slate-300 rounded mx-auto w-4/5 p-6 my-6">
     <h2 class="flex justify-start text-xl font-semibold">Article/Livre</h2>
         {% if form.non_field_errors %}
