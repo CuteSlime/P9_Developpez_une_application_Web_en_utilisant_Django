@@ -39,14 +39,14 @@
         <div class="flex flex-col w-full ">
             {{ review.headline.errors }}
             <label for="{{ review.headline.id_for_label }}" class="font-semibold">Titre</label>
-            {% render_field review.headline class="appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder=form.headline.label %}
+            {% render_field review.headline class="appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder=review.headline.label %}
         </div>
         <fieldset class="flex">
             {{ review.rating.errors }}
             <legend class="font-semibold">Note</legend>
             {% for choice in review.rating.field.choices %}
             <label class="inline-flex items-center m-2">
-                <input type="radio" class="review-radio text-indigo-600" name="{{ review.rating.html_name }}" value="{{ choice.0 }}" {% if form.rating.value == choice.0 %}checked{% endif %}>
+                <input type="radio" class="review-radio text-indigo-600" name="{{ review.rating.html_name }}" value="{{ choice.0 }}" {% if review.rating.value == choice.0 %}checked{% endif %}>
                 <span class="ml-2">  - {{choice.0 }}</span>
             </label>
             {% endfor %}
@@ -54,7 +54,7 @@
         <div class="flex flex-col w-full">
             {{ review.body.errors }}
             <label for="{{ review.body.id_for_label }}" class="font-semibold">Commentaire</label>
-            {% render_field review.body class="appearance-none border rounded h-64 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder=form.body.label %}
+            {% render_field review.body class="appearance-none border rounded h-64 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder=review.body.label %}
         </div>
         <br>
         <div class="flex flex-col w-full">

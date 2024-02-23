@@ -82,6 +82,12 @@ class TicketCreateView(LoginRequiredMixin, CreateView):
         "image",
     )
 
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        form.fields['title'].label = 'Titre de la publication'
+        form.fields['description'].label = 'Votre demande'
+        return form
+
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super().form_valid(form)
@@ -118,6 +124,12 @@ class TicketUpdateView(UserPassesTestMixin, UpdateView):
         "image",
     )
 
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        form.fields['title'].label = 'Titre de la publication'
+        form.fields['description'].label = 'Votre demande'
+        return form
+
     def test_func(self):
         ticket = self.get_object()
         return self.request.user == ticket.user
@@ -148,6 +160,12 @@ class TicketReviewCreateView(LoginRequiredMixin, CreateView):
     model = Ticket
     template_name = "review/ticket_review_new.html"
     fields = ("title", "description", "image",)
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        form.fields['title'].label = 'Titre de la publication'
+        form.fields['description'].label = 'Votre demande'
+        return form
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

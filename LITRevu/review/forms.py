@@ -6,7 +6,9 @@ from accounts.models import CustomUser
 
 class RatingForm(forms.ModelForm):
     """
-    A form for creating a Review. It includes fields for the headline, body, and rating of the review. The rating field is validated to ensure it is an integer between 0 and 5.
+    A form for creating a Review. It includes fields for the headline,
+    body, and rating of the review.
+    The rating field is validated to ensure it is an integer between 0 and 5.
     """
 
     RATING_CHOICES = [(i, '') for i in range(6)]
@@ -20,6 +22,11 @@ class RatingForm(forms.ModelForm):
             "body",
             "rating",
         )
+        labels = {
+            "headline": "Titre de votre critique",
+            "body": "Votre critique",
+            "rating": "note",
+        }
 
     def clean_rating(self):
         data = self.cleaned_data['rating']
@@ -31,7 +38,7 @@ class RatingForm(forms.ModelForm):
 
 class FollowUserForm(forms.Form):
     """
-    A form for following a user. It includes a field for the username of the user to follow. 
+    A form for following a user. It includes a field for the username of the user to follow.
     The username field is validated to ensure that:
     - the user exists
     - the user is not already followed by the current user
